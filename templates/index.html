@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+{% block title %}Inicio · Aplicación Flask + Auth0{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2>Inicio</h2>
+
+    {% if session.get('user') %}
+      <p class="subtle">
+        Has iniciado sesión como
+        <strong>{{ session.user.name or session.user.email }}</strong>.
+      </p>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:14px; margin-top:10px;">
+        <div>
+          <label>Nombre</label>
+          <input value="{{ session.user.name or '' }}" disabled />
+        </div>
+        <div>
+          <label>Email</label>
+          <input value="{{ session.user.email or '' }}" disabled />
+        </div>
+        <div class="full actions" style="margin-top:6px;">
+          <a class="btn" href="{{ url_for('profile') }}">Ir a mi perfil</a>
+          <a class="subtle" style="align-self:center;text-decoration:none;" href="{{ url_for('logout') }}">Salir</a>
+        </div>
+      </div>
+
+    {% else %}
+      <p class="subtle">
+        Haz clic en <strong>Ingresar</strong> para autenticarte con Auth0 y luego editar tu perfil.
+      </p>
+      <div class="actions">
+        <a class="btn" href="{{ url_for('login') }}">Ingresar</a>
+      </div>
+    {% endif %}
+  </div>
+{% endblock %}

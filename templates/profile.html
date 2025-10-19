@@ -1,0 +1,52 @@
+{% extends "layout.html" %}
+{% block title %}Perfil · Aplicación Flask + Auth0{% endblock %}
+
+{% block content %}
+  <div class="card">
+    <h2>Modificar mis datos</h2>
+    <p class="subtle">Estos campos se almacenan en <strong><code>user_metadata</code></strong> de Auth0.</p>
+
+    <form method="post" action="{{ url_for('profile') }}">
+      <div class="form-grid">
+
+        <div>
+          <label for="tipo_documento">Tipo de documento</label>
+          <select id="tipo_documento" name="tipo_documento">
+            {% set td = (user_metadata.tipo_documento if user_metadata and user_metadata.tipo_documento is defined else '') %}
+            <option value="" {{ ''==td and 'selected' or '' }}>Selecciona…</option>
+            <option value="Cédula" {{ 'Cédula'==td and 'selected' or '' }}>Cédula de Ciudadanía</option>
+            <option value="Targetaidentidad" {{ 'Targetaidentidad'==td and 'selected' or '' }}>Targeta de Identidad</option>
+            <option value="Cédulaextranjera" {{ 'Cédulaextranjera'==td and 'selected' or '' }}>Cédula de Extranjería</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="numero_documento">Número de documento</label>
+          <input id="numero_documento" name="numero_documento"
+                 value="{{ (user_metadata.numero_documento if user_metadata and user_metadata.numero_documento is defined else '') }}"
+                 autocomplete="off" />
+        </div>
+
+        <div class="full">
+          <label for="direccion">Dirección</label>
+          <input id="direccion" name="direccion"
+                 value="{{ (user_metadata.direccion if user_metadata and user_metadata.direccion is defined else '') }}"
+                 placeholder="Calle, número, ciudad" autocomplete="street-address" />
+        </div>
+
+        <div>
+          <label for="telefono">Teléfono</label>
+          <input id="telefono" name="telefono"
+                 value="{{ (user_metadata.telefono if user_metadata and user_metadata.telefono is defined else '') }}"
+                 placeholder="+57 300 000 0000" autocomplete="tel" />
+        </div>
+
+        <div class="full actions">
+          <button type="submit" class="btn">Guardar</button>
+          <a href="{{ url_for('index') }}" class="subtle" style="align-self:center;text-decoration:none;">Cancelar</a>
+        </div>
+
+      </div>
+    </form>
+  </div>
+{% endblock %}

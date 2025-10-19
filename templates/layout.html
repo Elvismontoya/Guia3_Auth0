@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Aplicación Flask + Auth0{% endblock %}</title>
+
+  <style>
+    :root {
+      --bg: #b3b3e293;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --primary: #4f46e5;
+      --primary-700: #4338ca;
+      --border: #e5e7eb;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 20% -10%, #eef2ff 0%, transparent 60%) , var(--bg);
+    }
+    header {
+      max-width: 960px;
+      margin: 28px auto 12px;
+      padding: 0 16px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: .2px;
+    }
+    nav a {
+      color: var(--primary);
+      text-decoration: none;
+      margin-right: 14px;
+      font-weight: 600;
+    }
+    nav a:last-child { margin-right: 0; }
+
+    .container {
+      max-width: 960px;
+      margin: 0 auto 40px;
+      padding: 0 16px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: 0 10px 24px rgba(17, 24, 39, .06);
+      padding: 20px;
+    }
+
+    .card h2 {
+      margin: 0 0 14px;
+      font-size: 22px;
+    }
+    .subtle { color: var(--muted); font-size: 14px; }
+
+    /* --- Formulario --- */
+    form { margin-top: 10px; }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .full { grid-column: 1 / -1; }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      color: #374151;
+      font-weight: 600;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #fff;
+      outline: none;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    input:focus, select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(79,70,229,.15);
+    }
+
+    .actions {
+      margin-top: 8px;
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      border: none;
+      background: var(--primary);
+      color: #fff;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .btn:hover { background: var(--primary-700); }
+
+    .alert {
+      margin: 0 0 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #dbeafe;
+      background: #eef2ff;
+      color: #1e3a8a;
+      font-size: 14px;
+    }
+
+    footer {
+      max-width: 960px;
+      margin: 18px auto 40px;
+      padding: 0 16px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* Responsive */
+    @media (max-width: 720px) {
+      .form-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header>
+    <h1>Formulario de Usuario</h1>
+    <nav>
+      <!-- cambiar color de texto a negro -->
+      <a href="{{ url_for('index') }}" style="color: black">Inicio</a>
+      {% if session.get('user') %}
+        <a href="{{ url_for('profile') }}" style="color: black">Perfil</a>
+        <a href="{{ url_for('logout') }}" style="color: black">Salir</a>
+      {% else %}
+        <a href="{{ url_for('login') }}" style="color: black">Ingresar</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <div class="container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for m in messages %}<div class="alert">{{ m }}</div>{% endfor %}
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </div>
+
+  <footer style="color: black; text-align: center; font-size: 16px;"><strong>Guía 3 realizada por Elvis Montoya</strong></footer>
+</body>
+</html>
